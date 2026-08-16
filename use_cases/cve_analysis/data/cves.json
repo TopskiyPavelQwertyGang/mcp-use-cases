@@ -1,0 +1,23 @@
+[
+  {
+    "package": "freerdp3",
+    "cve": "CVE-DEMO-2026-0001",
+    "affected": "<3.10.0",
+    "severity": "HIGH",
+    "summary": "Demo memory-safety issue in a FreeRDP3 component."
+  },
+  {
+    "package": "freerdp3",
+    "cve": "CVE-DEMO-2026-0002",
+    "affected": "<3.9.2",
+    "severity": "MEDIUM",
+    "summary": "Demo input-validation issue used for the workshop."
+  },
+  {
+    "package": "openssl",
+    "cve": "CVE-DEMO-2026-1001",
+    "affected": "<3.0.99",
+    "severity": "LOW",
+    "summary": "Demo record for another package."
+  }
+]
