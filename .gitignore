@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+use_cases/files_report/output/*.md
+!use_cases/files_report/output/.gitkeep
