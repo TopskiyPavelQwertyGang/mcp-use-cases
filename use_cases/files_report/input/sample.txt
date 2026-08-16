@@ -1,0 +1,10 @@
+Package: freerdp3
+Environment: demo
+Owner: security-team
+
+Findings:
+- CVE-DEMO-2026-0001 HIGH
+- CVE-DEMO-2026-0002 MEDIUM
+
+Notes:
+Review package version before release.
