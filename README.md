@@ -36,6 +36,35 @@
 
 Папка: [`use_cases/files_report`](use_cases/files_report)
 
+## End-to-end: локальная LLM + MCP
+
+В репозитории есть воспроизводимый агентный сценарий `llm_agent_demo.py`:
+
+```text
+USER
+  ↓
+Qwen3 1.7B / Ollama
+  ↓
+MCP tool discovery
+  ↓
+LLM выбирает find_cves
+  ↓
+MCP Server
+  ↓
+structured CVE data
+  ↓
+LLM формирует ответ
+```
+
+Запуск:
+
+```bash
+ollama pull qwen3:1.7b
+python llm_agent_demo.py
+```
+
+Демо использует локальные учебные CVE из `use_cases/cve_analysis/data/cves.json`; LLM не является источником фактов об уязвимостях.
+
 ## Общий принцип
 
 Сценарий меняется, но базовая схема остаётся той же:
@@ -62,20 +91,18 @@ HUMAN — когда решение требует ответственност�
 
 - Python 3.10+
 - `uv` или `pip`
+- Node.js/npm для MCP Inspector
+- Ollama только для end-to-end LLM demo
 
 ```bash
 git clone https://github.com/TopskiyPavelQwertyGang/mcp-use-cases.git
 cd mcp-use-cases
-uv sync
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
 ```
 
-Запуск примеров:
-
-```bash
-uv run python use_cases/cve_analysis/demo.py
-uv run python use_cases/api_agent/demo.py
-uv run python use_cases/files_report/demo.py
-```
+Подробные команды: [`QUICKSTART.md`](QUICKSTART.md).
 
 ## Структура
 
@@ -84,6 +111,7 @@ uv run python use_cases/files_report/demo.py
 ├── README.md
 ├── pyproject.toml
 ├── QUICKSTART.md
+├── llm_agent_demo.py
 ├── common/
 │   ├── policy.py
 │   └── models.py
