@@ -1,10 +1,10 @@
 import json
 from pathlib import Path
 
-from mcp.server.fastmcp import FastMCP
+from mcp.server import MCPServer
 from common.models import PackageQuery
 
-mcp = FastMCP("cve-analysis")
+mcp = MCPServer("cve-analysis")
 DATA = Path(__file__).parent / "data" / "cves.json"
 
 
@@ -25,4 +25,4 @@ def analyze_package(package: str) -> str:
 
 
 if __name__ == "__main__":
-    mcp.run(transport="streamable-http")
+    mcp.run(transport="stdio")
