@@ -1,9 +1,9 @@
 import httpx
 
-from mcp.server.fastmcp import FastMCP
+from mcp.server import MCPServer
 from common.policy import check_api_request
 
-mcp = FastMCP("safe-api-agent")
+mcp = MCPServer("safe-api-agent")
 
 
 @mcp.tool()
@@ -23,4 +23,4 @@ def safe_get(url: str) -> dict:
 
 
 if __name__ == "__main__":
-    mcp.run(transport="streamable-http")
+    mcp.run(transport="stdio")
