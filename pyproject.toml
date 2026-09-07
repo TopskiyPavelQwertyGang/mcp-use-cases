@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Practical MCP and AI agent use cases"
 requires-python = ">=3.10"
 dependencies = [
-  "mcp[cli]",
+  "mcp[cli]>=2,<3",
   "httpx",
   "pydantic>=2",
 ]
