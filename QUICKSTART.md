@@ -5,24 +5,28 @@
 ```bash
 git clone https://github.com/TopskiyPavelQwertyGang/mcp-use-cases.git
 cd mcp-use-cases
-uv sync
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
 ```
 
-Если `uv` не установлен:
+Проверка версии MCP SDK:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install "mcp[cli]" httpx pydantic
+python -m pip show mcp | grep Version
 ```
+
+Для текущих примеров используется MCP SDK v2.
 
 ## 2. CVE Analysis
 
+Запускайте демо как Python-модуль из корня репозитория, чтобы пакет `common` корректно находился:
+
 ```bash
-uv run python use_cases/cve_analysis/demo.py
+python -m use_cases.cve_analysis.demo
 ```
 
-Ожидаемая идея результата:
+Ожидаемый результат:
 
 ```text
 Package: freerdp3
@@ -31,10 +35,12 @@ Findings: 2
 - CVE-DEMO-2026-0002 [MEDIUM] ...
 ```
 
+Источник данных для этого воспроизводимого демо — локальный файл `use_cases/cve_analysis/data/cves.json`. На этом этапе LLM не используется: проверяется MCP-контур и структурированный tool call.
+
 ## 3. API Agent
 
 ```bash
-uv run python use_cases/api_agent/demo.py
+python -m use_cases.api_agent.demo
 ```
 
 Разрешённый домен пройдёт policy check. Неизвестный домен будет заблокирован allowlist-политикой.
@@ -42,7 +48,7 @@ uv run python use_cases/api_agent/demo.py
 ## 4. Files & Report
 
 ```bash
-uv run python use_cases/files_report/demo.py
+python -m use_cases.files_report.demo
 ```
 
 После запуска появится:
@@ -55,13 +61,34 @@ use_cases/files_report/output/report.md
 
 ## 5. MCP Inspector
 
-Любой сервер можно открыть через Inspector, например:
+Для Inspector нужны Node.js/npm и `npx`.
+
+CVE server запускается через `stdio`. Рабочая команда, проверенная на Kali:
 
 ```bash
-uv run mcp dev use_cases/cve_analysis/server.py
+npx @modelcontextprotocol/inspector \
+  .venv/bin/python \
+  -m use_cases.cve_analysis.server
 ```
 
-После этого посмотрите доступные tools и вызовите их вручную.
+В Inspector:
+
+1. откройте `Tools`;
+2. выберите `find_cves`;
+3. передайте `package = freerdp3`;
+4. выполните tool call;
+5. проверьте structured output и запись `TOOLS/CALL` в protocol log.
+
+Аналогично можно открыть другие серверы:
+
+```bash
+npx @modelcontextprotocol/inspector .venv/bin/python -m use_cases.api_agent.server
+npx @modelcontextprotocol/inspector .venv/bin/python -m use_cases.files_report.server
+```
+
+## Важно про архитектуру демо
+
+MCP не является LLM. В Inspector человек вручную выступает клиентом: выполняет discovery (`tools/list`) и вызывает инструмент (`tools/call`). Следующий уровень — подключить LLM-клиент, который будет выбирать инструмент и аргументы самостоятельно.
 
 ## Главное упражнение
 
