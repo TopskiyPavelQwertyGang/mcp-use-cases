@@ -1,10 +1,10 @@
 from pathlib import Path
 
-from mcp.server.fastmcp import FastMCP
+from mcp.server import MCPServer
 from common.models import ReportRequest
 from common.policy import safe_path
 
-mcp = FastMCP("files-report-agent")
+mcp = MCPServer("files-report-agent")
 BASE = Path(__file__).parent
 INPUT = BASE / "input"
 OUTPUT = BASE / "output"
@@ -34,4 +34,4 @@ def save_report(source_file: str, output_file: str = "report.md") -> dict:
 
 
 if __name__ == "__main__":
-    mcp.run(transport="streamable-http")
+    mcp.run(transport="stdio")
